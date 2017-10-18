@@ -14,4 +14,5 @@ class BaseTestCase(APITestCase):
                                                          created_by=self.test_user)
 
         self.client = APIClient()
+        self.client.force_authenticate(user=self.test_user)
         self.new_client = APIClient()
