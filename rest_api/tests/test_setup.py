@@ -15,4 +15,4 @@ class BaseTestCase(APITestCase):
 
         self.client = APIClient()
         self.client.force_authenticate(user=self.test_user)
-        self.new_client = APIClient()
+        self.newclient = APIClient()
