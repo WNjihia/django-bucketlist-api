@@ -16,7 +16,7 @@ class BucketlistTestCase(BaseTestCase):
 
     def test_bucketlist_create_unauthorized_access(self):
         self.bucketlist_data = {'name': 'Write a book', 'created_by': self.test_user.id}
-        response = self.new_client.post(
+        response = self.newclient.post(
                    reverse('create'),
                    self.bucketlist_data,
                    format="json")
@@ -51,6 +51,16 @@ class BucketlistTestCase(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_all_bucketlists_unauthorized_access(self):
-        response = self.new_client.get(
+        response = self.newclient.get(
                    '/bucketlists/')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_bucketlist(self):
+        response = self.client.get(
+                   '/bucketlists/1/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_bucketlist_that_does_not_exist(self):
+        response = self.client.get(
+                   '/bucketlists/2/')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
