@@ -1,8 +1,9 @@
 from rest_framework import generics
-from .serializers import BucketlistSerializer
+from .serializers import BucketlistSerializer, ItemSerializer
 from rest_framework import permissions
-from .permissions import IsOwner
-from .models import Bucketlist
+from .permissions import IsOwner, IsOwnerOrReadOnly
+from django.shortcuts import get_object_or_404
+from .models import Bucketlist, Item
 
 
 class BucketlistView(generics.ListCreateAPIView):
@@ -16,7 +17,7 @@ class BucketlistView(generics.ListCreateAPIView):
         return queryset
 
     def perform_create(self, serializer):
-        """Save the bucketlist details when creating a new bucketlist."""
+        """Saves the bucketlist details when creating a new bucketlist."""
         serializer.save(created_by=self.request.user)
 
 
@@ -32,9 +33,13 @@ class BucketlistDetailsView(generics.RetrieveUpdateDestroyAPIView):
 
 class ItemlistView(generics.ListCreateAPIView):
     """This class creates and retrieves all bucketlist items."""
-    pass
+    serializer_class = ItemSerializer
+    permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
+    queryset = Item.objects.all()
 
-
-class ItemlistDetailsView(generics.RetrieveUpdateDestroyAPIView):
-    """This class retrieves, updates and deletes specific bucketlist items."""
-    pass
+    def perform_create(self, serializer):
+        """Saves the item details when creating a new bucketlist item."""
+        bucketlist_id = self.kwargs.get('bucketlist_id')
+        bucketlist = get_object_or_404(Bucketlist, created_by=self.request.user,
+                                       id=bucketlist_id)
+        serializer.save(bucket=bucketlist)
