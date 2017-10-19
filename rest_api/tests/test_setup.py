@@ -1,5 +1,5 @@
 from rest_framework.test import APITestCase
-from rest_api.models import Bucketlist
+from rest_api.models import Bucketlist, Item
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
 
@@ -12,6 +12,8 @@ class BaseTestCase(APITestCase):
                                              password="password")
         self.test_bucketlist = Bucketlist.objects.create(name="Snack tasting",
                                                          created_by=self.test_user)
+        self.test_item = Item.objects.create(name="Singapore snacks",
+                                             bucket=self.test_bucketlist)
 
         self.client = APIClient()
         self.client.force_authenticate(user=self.test_user)
