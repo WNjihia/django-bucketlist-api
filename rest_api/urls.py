@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from .views import BucketlistView, BucketlistDetailsView, ItemlistView, ItemlistDetailsView
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = {
     url(r'^auth/', include('rest_framework.urls',
@@ -13,6 +14,7 @@ urlpatterns = {
         ItemlistView.as_view(), name="create"),
     url(r'^bucketlists/(?P<bucketlist_id>[0-9]+)/items/(?P<pk>[0-9]+)/$',
         ItemlistDetailsView.as_view(), name="bucketlist_items"),
+    url(r'^get-token/', obtain_auth_token, name="get_auth_token"),
     }
 
 urlpatterns = format_suffix_patterns(urlpatterns)
