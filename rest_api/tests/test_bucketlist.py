@@ -64,3 +64,34 @@ class BucketlistTestCase(BaseTestCase):
         response = self.client.get(
                    '/bucketlists/2/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_update_bucketlist(self):
+        self.bucketlist_data = {'name': 'Food tasting'}
+        response = self.client.put(
+                   '/bucketlists/1/',
+                   self.bucketlist_data,
+                   format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_bucketlist_invalid_name_format(self):
+        self.bucketlist_data = {'name': ''}
+        response = self.client.put(
+                   '/bucketlists/1/',
+                   self.bucketlist_data,
+                   format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        self.bucketlist_data = {'name': '@#$%^&*'}
+        response = self.client.put(
+                   '/bucketlists/1/',
+                   self.bucketlist_data,
+                   format="json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_update_bucketlist_that_does_not_exist(self):
+        self.bucketlist_data = {'name': 'Food tasting'}
+        response = self.client.put(
+                   '/bucketlists/2/',
+                   self.bucketlist_data,
+                   format="json")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
