@@ -43,3 +43,18 @@ class ItemlistView(generics.ListCreateAPIView):
         bucketlist = get_object_or_404(Bucketlist, created_by=self.request.user,
                                        id=bucketlist_id)
         serializer.save(bucket=bucketlist)
+
+
+class ItemlistDetailsView(generics.RetrieveUpdateDestroyAPIView):
+    """This class retrieves, updates and deletes specific bucketlist items."""
+
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        """Returns the item created by current user in specific bucket."""
+        bucket = self.kwargs.get('bucketlist_id')
+        item = self.kwargs.get('pk')
+        bucketlist = get_object_or_404(Bucketlist, created_by=self.request.user,
+                                       id=bucket)
+        queryset = Item.objects.filter(id=item, bucket=bucketlist)
+        return queryset
