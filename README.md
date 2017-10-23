@@ -83,5 +83,5 @@ http://localhost:8000/
 
 To test, run the following command:
 ```
-nosetests
+python manage.py test
 ```
