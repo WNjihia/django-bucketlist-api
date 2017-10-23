@@ -1,6 +1,22 @@
 from rest_framework import serializers
 from .models import Bucketlist, Item
+from django.contrib.auth.models import User
 import re
+
+
+class UserSerializer(serializers.ModelSerializer):
+    """Define the user api representation."""
+
+    class Meta:
+        """Meta class."""
+
+        model = User
+        fields = ('username', 'password')
+
+    def create(self, validated_data):
+        """Create and returns a new user."""
+        user = User.objects.create_user(**validated_data)
+        return user
 
 
 class BucketlistSerializer(serializers.ModelSerializer):
