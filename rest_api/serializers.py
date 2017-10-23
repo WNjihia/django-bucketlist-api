@@ -42,7 +42,8 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         """Meta class to map serializer's fields with the model fields."""
         model = Item
-        fields = ('id', 'name', 'date_created', 'date_modified', 'bucket')
+        fields = ('id', 'name', 'date_created', 'date_modified',
+                  'bucket', 'is_completed')
         read_only_fields = ('date_created', 'date_modified')
 
     def validate_name(self, value):
