@@ -90,7 +90,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    )
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'LIMIT_QUERY_PARAM': 'limit',
+    'OFFSET_QUERY_PARAM': 'offset'
 }
 
 # Password validation
