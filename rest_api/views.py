@@ -4,12 +4,15 @@ from rest_framework import permissions
 from .permissions import IsOwner, IsOwnerOrReadOnly
 from django.shortcuts import get_object_or_404
 from .models import Bucketlist, Item
+from rest_framework.filters import SearchFilter
 
 
 class BucketlistView(generics.ListCreateAPIView):
     """This class creates and retrieves all bucketlists."""
     serializer_class = BucketlistSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwner)
+    filter_backends = [SearchFilter]
+    search_fields = ('id', 'name')
 
     def get_queryset(self):
         """Returns all bucketlists created by the current user."""
@@ -36,6 +39,8 @@ class ItemlistView(generics.ListCreateAPIView):
     serializer_class = ItemSerializer
     permission_classes = (permissions.IsAuthenticated, IsOwnerOrReadOnly)
     queryset = Item.objects.all()
+    filter_backends = [SearchFilter]
+    search_fields = ('id', 'name')
 
     def perform_create(self, serializer):
         """Saves the item details when creating a new bucketlist item."""
