@@ -20,7 +20,7 @@ class BucketlistTestCase(BaseTestCase):
                    reverse('create'),
                    self.bucketlist_data,
                    format="json")
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_bucketlist_create_duplicates(self):
         self.bucketlist_data = {'name': 'Snack tasting', 'created_by': self.test_user.id}
@@ -53,7 +53,7 @@ class BucketlistTestCase(BaseTestCase):
     def test_get_all_bucketlists_unauthorized_access(self):
         response = self.newclient.get(
                    '/bucketlists/')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_get_bucketlist(self):
         response = self.client.get(
