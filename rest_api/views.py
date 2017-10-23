@@ -1,10 +1,17 @@
 from rest_framework import generics
-from .serializers import BucketlistSerializer, ItemSerializer
+from .serializers import BucketlistSerializer, ItemSerializer, UserSerializer
 from rest_framework import permissions
 from .permissions import IsOwner, IsOwnerOrReadOnly
 from django.shortcuts import get_object_or_404
 from .models import Bucketlist, Item
+from django.contrib.auth.models import User
 from rest_framework.filters import SearchFilter
+
+
+class UserView(generics.CreateAPIView):
+    """Defines the user view"""
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class BucketlistView(generics.ListCreateAPIView):
